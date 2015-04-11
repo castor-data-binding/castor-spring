@@ -8,12 +8,28 @@
 
 	<name>Spring ORM implementation for Castor JDO</name>
 	<description>This project provides a Castor JDO-specific implementation of the Spring 
-		ORM interfaces (as described at 
-		http://static.springframework.org/spring/docs/1.2.x/reference/orm.html), allowing users
+		ORM interfaces (as described at http://static.springframework.org/spring/docs/1.2.x/reference/orm.html), allowing users
 		to use Spring ORM as their preferred choice of dealing with the persistence aspects of 
 		their applications.
 	</description>
 	<url>http://castor.org</url>
+
+   <distributionManagement>
+    <repository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>sonatype-nexus-staging</id>
+      <name>Sonatype OSS releases</name>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+      <layout>default</layout>
+    </repository>
+    <snapshotRepository>
+      <uniqueVersion>true</uniqueVersion>
+      <id>sonatype-nexus-snapshots</id>
+      <name>Sonatype OSS snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <layout>default</layout>
+    </snapshotRepository>
+  </distributionManagement>
 
 	<issueManagement>
 		<system>Jira</system>
@@ -316,12 +332,12 @@
 		<dependency>
 			<groupId>org.codehaus.castor</groupId>
 			<artifactId>castor-jdo</artifactId>
-			<version>1.3.1</version>
+			<version>${castor.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.castor</groupId>
 			<artifactId>castor-xml</artifactId>
-			<version>1.3.1</version>
+			<version>${castor.version}</version>
 		</dependency>
 
 		<dependency>
@@ -599,6 +615,7 @@
    
    <properties>
         <spring.version>3.0.2.RELEASE</spring.version>
+        <castor.version>1.3.1</castor.version>
         <derby-version>10.11.1.1</derby-version>
   	    <github.global.server>github</github.global.server>
    </properties>
