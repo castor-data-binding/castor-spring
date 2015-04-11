@@ -148,7 +148,7 @@ Product product = dao.load(1);
 
 ## Using Castor JDO with Spring ORM - With CastorDaoSupport
 	
-Alternativelky to extending <tt>CastorTemplate</tt>, one could extend the
+Alternatively to extending <tt>CastorTemplate</tt>, one could extend the
 <tt>CastorDaoSupport</tt> class and implement the <tt>ProductDAO</tt> as 
 follows.
 	
@@ -182,3 +182,17 @@ Changing the bean definition for <tt>myProductDAO</tt> to ...
 		
 the code to load an instance of <tt>Product</tt> still is as shown above.
 		
+## Complete Spring configuration (using Template)
+
+```
+<bean id="jdoManager" class="org.castor.spring.orm.LocalCastorFactoryBean">
+  <property name="databaseName" value="test" />
+  <property name="configLocation" value="classpath:jdo-conf.xml" />
+</bean>
+
+<bean id="myProductDao" class="product.ProductDaoImplUsingTemplate">
+  <property name="JDOManager">
+    <ref bean="myJdoManager"/>
+  </property>
+</bean>
+```
