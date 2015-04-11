@@ -137,62 +137,42 @@
                 
         <div id="bodyColumn"  class="span9" >
                                   
-            
-  
-  
-	<p>This guide assumes that you are an experienced Castor JDO users that knows how
-	   to use Castor's interfaces and classes to interact with a database. If 
-	   this is not the case, please familiarize yourself with 
-	   <a class="externalLink" href="http://www.castor.org/jdo.html">Castor JDO first</a>. </p> 
-
-	
+            <h1>Spring ORM for (experienced) Castor JDO users - A possible migration</h1>
+<p>A migration guide for experienced Castor JDO users</p>
+<p>This guide assumes that you are an experienced Castor JDO users that knows how to use Castor&#x2019;s interfaces and classes to interact with a database. If this is not the case, please familiarize yourself with <a class="externalLink" href="http://www.castor.org/jdo.html">Castor JDO first</a>. </p>
 <div class="section">
 <h2><a name="Sample_domain_objects"></a>Sample domain objects</h2>
-	
-		
-<p>The sample domain objects used in here basically define a <tt>Catalogue</tt>, 
-		   which is a collection of <tt>Product</tt>s. A possible castor JDO mapping could look
-		   as follows:</p>
-		   
-		
-<div class="source">
-<pre>
-&lt;class name=&quot;org.castor.sample.Catalogue&quot;&gt;
-   &lt;map-to table=&quot;catalogue&quot;/&gt;
-   &lt;field name=&quot;id&quot; type=&quot;long&quot;&gt;
-      &lt;sql name=&quot;id&quot; type=&quot;integer&quot; /&gt;
-   &lt;/field&gt;
-   &lt;field name=&quot;products&quot; type=&quot;org.castor.sample.Product&quot; collection=&quot;arraylist&quot;&gt;
-      &lt;sql many-key=&quot;c_id&quot; /&gt;
-   &lt;/field&gt;
-&lt;/class&gt;
+<p>The sample domain objects used in here basically define a <tt>Catalogue</tt>, which is a collection of <tt>Product</tt>s. A possible castor JDO mapping could look as follows:</p>
 
-&lt;class name=&quot;org.castor.sample.Product&quot;&gt;
-   &lt;map-to table=&quot;product&quot;/&gt;
-   &lt;field name=&quot;id&quot; type=&quot;long&quot;&gt;
-      &lt;sql name=&quot;id&quot; type=&quot;integer&quot; /&gt;
-   &lt;/field&gt;
-   &lt;field name=&quot;description&quot; type=&quot;string&quot;&gt;
-      &lt;sql name=&quot;desc&quot; type=&quot;varchar&quot; /&gt;
-   &lt;/field&gt;
-&lt;/class&gt;
-		</pre></div>
-		
-	</div>
-	
-	
+<div class="source">
+<div class="source">
+<pre>&amp;lt;class name=&quot;org.castor.sample.Catalogue&quot;&amp;gt;
+   &amp;lt;map-to table=&quot;catalogue&quot;/&amp;gt;
+   &amp;lt;field name=&quot;id&quot; type=&quot;long&quot;&amp;gt;
+      &amp;lt;sql name=&quot;id&quot; type=&quot;integer&quot; /&amp;gt;
+   &amp;lt;/field&amp;gt;
+   &amp;lt;field name=&quot;products&quot; type=&quot;org.castor.sample.Product&quot; collection=&quot;arraylist&quot;&amp;gt;
+      &amp;lt;sql many-key=&quot;c_id&quot; /&amp;gt;
+   &amp;lt;/field&amp;gt;
+&amp;lt;/class&amp;gt;
+
+&amp;lt;class name=&quot;org.castor.sample.Product&quot;&amp;gt;
+   &amp;lt;map-to table=&quot;product&quot;/&amp;gt;
+   &amp;lt;field name=&quot;id&quot; type=&quot;long&quot;&amp;gt;
+      &amp;lt;sql name=&quot;id&quot; type=&quot;integer&quot; /&amp;gt;
+   &amp;lt;/field&amp;gt;
+   &amp;lt;field name=&quot;description&quot; type=&quot;string&quot;&amp;gt;
+      &amp;lt;sql name=&quot;desc&quot; type=&quot;varchar&quot; /&amp;gt;
+   &amp;lt;/field&amp;gt;
+&amp;lt;/class&amp;gt;
+</pre></div></div></div>
 <div class="section">
 <h2><a name="Using_Castor_JDO_manually"></a>Using Castor JDO manually</h2>
-	
-		
-<p>To e.g. load a given <tt>Catalogue</tt> instance as defined by its identity,
-		   and all its associated <tt>Product</tt> instances, the following code could be used, 
-		   based upon the Castor-specific interfaces <tt>JDOManager</tt> and <tt>Database</tt>.</p>
-		   
-		
+<p>To e.g. load a given <tt>Catalogue</tt> instance as defined by its identity, and all its associated <tt>Product</tt> instances, the following code could be used, based upon the Castor-specific interfaces <tt>JDOManager</tt> and <tt>Database</tt>.</p>
+
 <div class="source">
-<pre>
-JDOManager.loadConfiguration(&quot;jdo-conf.xml&quot;);
+<div class="source">
+<pre>JDOManager.loadConfiguration(&quot;jdo-conf.xml&quot;);
 JDOManager jdoManager = JDOmanager.createInstance(&quot;sample&quot;);
 
 Database database = jdoManager.getDatabase();		
@@ -200,32 +180,16 @@ database.begin();
 Catalogue catalogue = database.load(catalogue.class, new Long(1));
 database.commit();
 database.close();
-		</pre></div>
-		
-		
-<p>For brevity, exception handling has been ommitted completely. But is is quite obvious
-		   that - when using such code fragments to implement various methods of a DAO - 
-		   there's a lot of redundant code that needed to be written again and again - and exception
-		   handling is adding some additional complexity here as well.</p>
-		   
-		
-<p>Ent0ers Spring ORM for Castor JDO, a small layer that allows usage of Castor JDO
-		   through Spring ORM, with all the known benefits (exception conversion, templates, tx handling).</p>
-		
-	</div>
-	
-	
+</pre></div></div>
+<p>For brevity, exception handling has been ommitted completely. But is is quite obvious that - when using such code fragments to implement various methods of a DAO - there&#x2019;s a lot of redundant code that needed to be written again and again - and exception handling is adding some additional complexity here as well.</p>
+<p>Enters Spring ORM for Castor JDO, a small layer that allows usage of Castor JDO through Spring ORM, with all the known benefits (exception conversion, templates, tx handling).</p></div>
 <div class="section">
 <h2><a name="Using_Castor_JDO_with_Spring_ORM_-_Without_CastorTemplate"></a>Using Castor JDO with Spring ORM - Without CastorTemplate</h2>
-	
-		
-<p>Let's see how one might implement the <tt>loadProduct(int)</tt> of a <tt>ProductDAO</tt>
-		   class with the help of Spring ORM using Castor JDO:</p>
-		   
-		
+<p>Let&#x2019;s see how one might implement the <tt>loadProduct(int)</tt> of a <tt>ProductDAO</tt> class with the help of Spring ORM using Castor JDO:</p>
+
 <div class="source">
-<pre>
-public class ProductDaoImpl implements ProductDao {
+<div class="source">
+<pre>public class ProductDaoImpl implements ProductDao {
 
   private JDOManager jdoManager;
 
@@ -242,46 +206,30 @@ public class ProductDaoImpl implements ProductDao {
           }
         });
   }
-}		</pre></div>
+}
+</pre></div></div>
+<p>Still a lot of code to write, but compared to the above section, the DAO gets passed a fully configured <tt>JDOManager</tt> instance through Spring&#x2019;s dependency injection mechanism. All that&#x2019;s required is configuration of Castor&#x2019;s JDOManager as a Spring bean definition in an Spring application context as follows.</p>
 
-		
-<p>Still a lot of code to write, but compared to the above section, the DAO gets
-		   passed a fully configured <tt>JDOManager</tt> instance through Spring's dependency
-		   injection mechanism. All that's required is configuration of Castor's JDOManager
-		   as a Spring bean definition in an Spring application context as 
-		   follows.</p>
-		   
-		
 <div class="source">
-<pre>
-&lt;bean id=&quot;jdoManager&quot; class=&quot;org.castor.spring.orm.LocalCastorFactoryBean&quot;&gt;
-  &lt;property name=&quot;databaseName&quot; value=&quot;test&quot; /&gt;
-  &lt;property name=&quot;configLocation&quot; value=&quot;classpath:jdo-conf.xml&quot; /&gt;
-&lt;/bean&gt;
+<div class="source">
+<pre>&amp;lt;bean id=&quot;jdoManager&quot; class=&quot;org.castor.spring.orm.LocalCastorFactoryBean&quot;&amp;gt;
+  &amp;lt;property name=&quot;databaseName&quot; value=&quot;test&quot; /&amp;gt;
+  &amp;lt;property name=&quot;configLocation&quot; value=&quot;classpath:jdo-conf.xml&quot; /&amp;gt;
+&amp;lt;/bean&amp;gt;
 
-&lt;bean id=&quot;myProductDao&quot; class=&quot;product.ProductDaoImpl&quot;&gt;
-  &lt;property name=&quot;JDOManager&quot;&gt;
-    &lt;ref bean=&quot;jdoManager&quot;/&gt;
-  &lt;/property&gt;
-&lt;/bean&gt;</pre></div>
-		
-		
-	</div>
-
-	
+&amp;lt;bean id=&quot;myProductDao&quot; class=&quot;product.ProductDaoImpl&quot;&amp;gt;
+  &amp;lt;property name=&quot;JDOManager&quot;&amp;gt;
+    &amp;lt;ref bean=&quot;jdoManager&quot;/&amp;gt;
+  &amp;lt;/property&amp;gt;
+&amp;lt;/bean&amp;gt;
+</pre></div></div></div>
 <div class="section">
 <h2><a name="Using_Castor_JDO_with_Spring_ORM_-_With_CastorTemplate"></a>Using Castor JDO with Spring ORM - With CastorTemplate</h2>
-	
-		
-<p>Above code is still quite verbous, as it requires you to write short (though complex)
-		   callback functions. To ease life of the Castor JDO user even more, a range of template 
-		   methods have been added to <tt>CastorTemplate</tt>, allowing the implementation of above
-		   <tt>ProductDAO</tt> to be shortened considerably.</p>
-		   
-		
+<p>Above code is still quite verbous, as it requires you to write short (though complex) callback functions. To ease life of the Castor JDO user even more, a range of template methods have been added to <tt>CastorTemplate</tt>, allowing the implementation of above <tt>ProductDAO</tt> to be shortened considerably.</p>
+
 <div class="source">
-<pre>
-public class ProductDaoImplUsingTemplate extends CastorTemplate implements ProductDao {
+<div class="source">
+<pre>public class ProductDaoImplUsingTemplate extends CastorTemplate implements ProductDao {
 
   private JDOManager jdoManager;
 
@@ -294,44 +242,32 @@ public class ProductDaoImplUsingTemplate extends CastorTemplate implements Produ
   }
   
   ...
-}		</pre></div>
+}
+</pre></div></div>
+<p>Changing the bean definition for <tt>myProductDAO</tt> to &#x2026;</p>
 
-		
-<p>Changing the bean definition for <tt>myProductDAO</tt> to ...</p>
-		
-		
 <div class="source">
-<pre>
-&lt;bean id=&quot;myProductDao&quot; class=&quot;product.ProductDaoImplUsingTemplate&quot;&gt;
-  &lt;property name=&quot;JDOManager&quot;&gt;
-    &lt;ref bean=&quot;myJdoManager&quot;/&gt;
-  &lt;/property&gt;
-&lt;/bean&gt;</pre></div>
-		
-		
-<p>loading an instance of <tt>Product</tt> by its identifier is reduced to ...</p>
-		
-		
 <div class="source">
-<pre>
-ProductDao dao = (ProductDAO) context.getBean (&quot;myProductDAO&quot;);
+<pre>&amp;lt;bean id=&quot;myProductDao&quot; class=&quot;product.ProductDaoImplUsingTemplate&quot;&amp;gt;
+  &amp;lt;property name=&quot;JDOManager&quot;&amp;gt;
+    &amp;lt;ref bean=&quot;myJdoManager&quot;/&amp;gt;
+  &amp;lt;/property&amp;gt;
+&amp;lt;/bean&amp;gt;
+</pre></div></div>
+<p>loading an instance of <tt>Product</tt> by its identifier is reduced to &#x2026;</p>
+
+<div class="source">
+<div class="source">
+<pre>ProductDao dao = (ProductDAO) context.getBean (&quot;myProductDAO&quot;);
 Product product = dao.load(1);
-		</pre></div>
-	</div>
-
-	
+</pre></div></div></div>
 <div class="section">
 <h2><a name="Using_Castor_JDO_with_Spring_ORM_-_With_CastorDaoSupport"></a>Using Castor JDO with Spring ORM - With CastorDaoSupport</h2>
-	
-		
-<p>Alernativelky to extending <tt>CastorTemplate</tt>, one could extend the
-		   <tt>CastorDaoSupport</tt> class and implement the <tt>ProductDAO</tt> as 
-		   follows.</p>
-		   
-		
+<p>Alternativelky to extending <tt>CastorTemplate</tt>, one could extend the <tt>CastorDaoSupport</tt> class and implement the <tt>ProductDAO</tt> as follows.</p>
+
 <div class="source">
-<pre>
-public class ProductDaoImplUsingDaoSupport extends CastorDaoSupport implements ProductDao {
+<div class="source">
+<pre>public class ProductDaoImplUsingDaoSupport extends CastorDaoSupport implements ProductDao {
 
   private JDOManager jdoManager;
 
@@ -344,27 +280,19 @@ public class ProductDaoImplUsingDaoSupport extends CastorDaoSupport implements P
   }
   
   ...
-}		</pre></div>
+}
+</pre></div></div>
+<p>Changing the bean definition for <tt>myProductDAO</tt> to &#x2026;</p>
 
-		
-<p>Changing the bean definition for <tt>myProductDAO</tt> to ...</p>
-		
-		
 <div class="source">
-<pre>
-&lt;bean id=&quot;myProductDao&quot; class=&quot;product.ProductDaoImplUsingDaoSupport&quot;&gt;
-  &lt;property name=&quot;JDOManager&quot;&gt;
-    &lt;ref bean=&quot;myJdoManager&quot;/&gt;
-  &lt;/property&gt;
-&lt;/bean&gt;</pre></div>
-		
-		
-<p>the code to load an instance of <tt>Product</tt> still is as shown above.</p>
-		
-	</div>
-
-	
-
+<div class="source">
+<pre>&amp;lt;bean id=&quot;myProductDao&quot; class=&quot;product.ProductDaoImplUsingDaoSupport&quot;&amp;gt;
+  &amp;lt;property name=&quot;JDOManager&quot;&amp;gt;
+    &amp;lt;ref bean=&quot;myJdoManager&quot;/&amp;gt;
+  &amp;lt;/property&amp;gt;
+&amp;lt;/bean&amp;gt;
+</pre></div></div>
+<p>the code to load an instance of <tt>Product</tt> still is as shown above.</p></div>
                   </div>
             </div>
           </div>
