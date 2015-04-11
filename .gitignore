@@ -2,4 +2,7 @@
 .classpath
 .project
 .settings
+castor-log.txt
+derby.log
+
 
