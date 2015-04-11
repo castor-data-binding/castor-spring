@@ -1,0 +1,10 @@
+org.castor.spring.orm.tests
+org.castor.spring.orm.tests.factory.bean
+org.castor.spring.orm.tests.service
+org.castor.spring.orm.tests.template
+org.castor.spring.orm.tests.twopc
+org.exolab.castor.dao
+org.exolab.castor.entity
+org.exolab.castor.entity.jdo_descriptors
+org.exolab.castor.interceptor
+org.exolab.castor.service
